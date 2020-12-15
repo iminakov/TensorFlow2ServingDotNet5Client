@@ -35,9 +35,9 @@ while True :
 # Test trained model with test data
 model.evaluate(x_test,  y_test, verbose=2)
 
-# Export trained model to TrainedModel/1 directory
-export_path = os.path.dirname("TrainedModel/1/")
-print('trained_model_path = {}\n'.format(export_path))
+# Export trained model to ExportedModel/1 directory
+export_path = os.path.dirname("ExportedModel/1/")
+print('exported_model_path = {}\n'.format(export_path))
 
 tf.keras.models.save_model(
     model,

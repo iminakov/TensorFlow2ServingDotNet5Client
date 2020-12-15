@@ -4,3 +4,4 @@
 /src/DotnetClient/TensorFlowServingCSharpClientNet5/ClientApp/node_modules
 /src/DotnetClient/TensorFlowServingCSharpClientNet5/bin
 /src/DotnetClient/TensorFlowServingCSharpClientNet5/obj
+/src/DotnetClient/TensorFlowServingCSharpClientNet5/TensorFlowServingCSharpClientNet5.csproj.user
