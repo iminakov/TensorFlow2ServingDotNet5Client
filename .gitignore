@@ -1,0 +1,6 @@
+/src/DotnetClient/.vscode
+/src/DotnetClient/TensorFlowServingClient/obj
+/src/DotnetClient/TensorFlowServingClient/bin
+/src/DotnetClient/TensorFlowServingCSharpClientNet5/ClientApp/node_modules
+/src/DotnetClient/TensorFlowServingCSharpClientNet5/bin
+/src/DotnetClient/TensorFlowServingCSharpClientNet5/obj
