@@ -25,7 +25,7 @@ init_tensorflow_serving_in_docker.bat
 
 - Run trained model in TensorFlowServing docker container
 ```sh
-start run_serving_in_docker.bat
+start run_all_models_serving_in_docker.bat
 ```
 
 - Build and Run .Net Client Application
@@ -35,4 +35,12 @@ start run_client.bat
 
 - Navigate to [http://localhost:5000/](http://localhost:5000/) and test prediction app
 
+## Available examples
+
+### Number prediction example - MNIST, based on simple CNN
+
 ![.NET Core 5.0 TensorFlow 2.0 Client](https://user-images.githubusercontent.com/2061634/102206464-ba58ac00-3edd-11eb-8c57-6095091dec12.png)
+
+### Cats and Dogs classification example, based on TensorFlow tutorials and MobileNetV2
+
+![CatsAndDogsPredictionClient](https://user-images.githubusercontent.com/2061634/102719799-41a08800-4301-11eb-8105-06e53c1c675d.png)
