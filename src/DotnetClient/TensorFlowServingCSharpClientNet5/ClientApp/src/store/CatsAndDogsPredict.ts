@@ -4,7 +4,7 @@ import { AppThunkAction } from './';
 
 export interface PredictionResult {
     results: number[];
-    predictedValue: number;
+    predictedValue: string;
     success: boolean;
     errorMessage: string;
     debugText: string;
@@ -14,7 +14,7 @@ export interface CatsAndDogsPredictState {
     loading: boolean;
     loaded: boolean;
     results: number[];
-    predictedValue: number;
+    predictedValue: string;
     predictResult: boolean;
     errorMessage: string;
     debugText: string;
@@ -25,7 +25,7 @@ interface PredictImageCatsAndDogsActionLoading { type: 'CND_PREDICT_IMAGE_LOADIN
 interface PredictImageCatsAndDogsActionLoaded {
     type: 'CND_PREDICT_IMAGE_LOADED';
     results: number[];
-    predictedValue: number;
+    predictedValue: string;
     predictResult: boolean;
     errorMessage: string;
     debugText: string;

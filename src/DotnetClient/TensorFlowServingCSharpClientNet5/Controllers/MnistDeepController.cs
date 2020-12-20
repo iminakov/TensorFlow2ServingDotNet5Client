@@ -57,7 +57,7 @@ namespace TensorFlowServingCSharpClientNet5.Controllers
                 {
                     Success = true,
                     Results = predictResponse.Outputs["dense_1"].FloatVal.Select(x => x).ToList(),
-                    PredictedValue = predictedValue,
+                    PredictedValue = predictedValue.ToString(),
                     DebugText = $"Total time: {stopWatch.ElapsedMilliseconds} ms"
                 };
 
@@ -93,7 +93,7 @@ namespace TensorFlowServingCSharpClientNet5.Controllers
                 {
                     Success = true,
                     Results = predictionRestResponse.Predictions[0][0].Select(x => x).ToList(),
-                    PredictedValue = predictedValue,
+                    PredictedValue = predictedValue.ToString(),
                     DebugText = $"Total time: {stopWatch.ElapsedMilliseconds} ms"
                 };
             }

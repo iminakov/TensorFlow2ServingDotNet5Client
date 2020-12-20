@@ -53,7 +53,7 @@ namespace TensorFlowServingClient.Utils
 			return imageTensorBuilder;
 		}
 
-		public static TensorProto CreateTensorFromImage((int r, int g, int b)[][] imageData, float revertsBits)
+		public static TensorProto CreateTensorFromImage((int r, int g, int b)[][] imageData, float scaling, float offset)
 		{
 			var imageFeatureShape = new TensorShapeProto();
 
@@ -70,9 +70,9 @@ namespace TensorFlowServingClient.Utils
 			{
 				for (int j = 0; j < imageData.Length; ++j)
 				{
-					imageTensorBuilder.FloatVal.Add(imageData[i][j].b / revertsBits);
-					imageTensorBuilder.FloatVal.Add(imageData[i][j].g / revertsBits);
-					imageTensorBuilder.FloatVal.Add(imageData[i][j].r / revertsBits);
+					imageTensorBuilder.FloatVal.Add(imageData[i][j].b / scaling + offset);
+					imageTensorBuilder.FloatVal.Add(imageData[i][j].g / scaling + offset);
+					imageTensorBuilder.FloatVal.Add(imageData[i][j].r / scaling + offset);
 				}
 			}
 

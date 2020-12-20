@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TensorFlowServingCSharpClientNet5.Models
 {
-    public class PredictionRestColorImageRequest
+    public class PredictionRestCatsAndDogsRequest
     {
         [JsonProperty("signature_name")]
         public string SignatureName { get; set; }
