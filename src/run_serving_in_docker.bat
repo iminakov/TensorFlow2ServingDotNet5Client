@@ -1,1 +1,0 @@
-docker run -t --rm -p 8500:8500 -p 8501:8501 -v "%cd%/TrainingModel/ExportedModel:/models/mnist_v1" -e MODEL_NAME=mnist_v1 tensorflow/serving &

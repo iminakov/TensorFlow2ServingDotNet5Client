@@ -7,3 +7,6 @@
 /src/DotnetClient/TensorFlowServingCSharpClientNet5/TensorFlowServingCSharpClientNet5.csproj.user
 /src/DotnetClient/.vs/TensorFlowServingCSharpClientNet5/DesignTimeBuild/.dtbcache.v2
 /src/DotnetClient/.vs
+/src/TrainingModel/Test
+/src/DotnetClient/TensorFlowServingCSharpClientNet5/.vscode/launch.json
+/src/DotnetClient/TensorFlowServingCSharpClientNet5/.vscode/tasks.json
