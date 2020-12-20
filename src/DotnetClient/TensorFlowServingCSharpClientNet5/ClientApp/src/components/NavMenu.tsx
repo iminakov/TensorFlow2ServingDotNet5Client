@@ -23,6 +23,9 @@ export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }
                                 <NavItem>
                                     <NavLink tag={Link} className="text-dark" to="/mnist">MNIST Deep Prediction</NavLink>
                                 </NavItem>
+                                <NavItem>
+                                    <NavLink tag={Link} className="text-dark" to="/cats_and_dogs">Cats and Dogs Prediction</NavLink>
+                                </NavItem>
                             </ul>
                         </Collapse>
                     </Container>

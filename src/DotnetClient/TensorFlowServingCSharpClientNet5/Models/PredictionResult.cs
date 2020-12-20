@@ -13,7 +13,7 @@ namespace WebTensorFlowServingClient.Models
 
         public string ErrorMessage { get; set; }
 
-        public int PredictedNumber { get; set; }
+        public int PredictedValue { get; set; }
 
         public string DebugText { get; set; }
     }

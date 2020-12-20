@@ -8,31 +8,40 @@ namespace TensorFlowServingClient.Utils
 {
 	public class ImageUtils
 	{
-
-		public static int[][] ConvertImageStreamToDimArrays(Bitmap bitmap)
+		public static int[][] ConvertImageStreamToDimArraysGrayScale(Bitmap bitmap)
 		{
-			var bitmapArray = BitmapToByteArray(bitmap);
+			var bitmapArray = BitmapToByteArrayGrayScale(bitmap);
 			using (var memoryStream = new MemoryStream(bitmapArray))
 			{
 				memoryStream.Position = 0;
-				return ConvertImageDataToDimArrays(bitmap.Height, bitmap.Width, memoryStream);
+				return ConvertImageDataToDimArraysGreyScaled(bitmap.Height, bitmap.Width, memoryStream);
 			}
 		}
 
-		public static int[][] ConvertImageStreamToDimArrays(Stream stream)
+		public static (int, int, int)[][] ConvertImageStreamToDimArraysColor(Bitmap bitmap)
+		{
+			var bitmapArray = BitmapToByteArrayColor(bitmap);
+			using (var memoryStream = new MemoryStream(bitmapArray))
+			{
+				memoryStream.Position = 0;
+				return ConvertImageDataToDimArraysColor(bitmap.Height, bitmap.Width, memoryStream);
+			}
+		}
+
+		public static int[][] ConvertImageStreamToDimArraysGrayScale(Stream stream)
 		{
 			using (var bitmap = new Bitmap(stream))
 			{
-				var bitmapArray = BitmapToByteArray(bitmap);
+				var bitmapArray = BitmapToByteArrayGrayScale(bitmap);
 				using (var memoryStream = new MemoryStream(bitmapArray))
 				{
 					memoryStream.Position = 0;
-					return ConvertImageDataToDimArrays(bitmap.Height, bitmap.Width, memoryStream);
+					return ConvertImageDataToDimArraysGreyScaled(bitmap.Height, bitmap.Width, memoryStream);
 				}
 			}
 		}
 
-		private static int[][] ConvertImageDataToDimArrays(int numRows, int numCols, MemoryStream stream)
+		private static int[][] ConvertImageDataToDimArraysGreyScaled(int numRows, int numCols, MemoryStream stream)
 		{
 			var imageMatrix = new int[numRows][];
 			for (int row = 0; row < numRows; row++)
@@ -46,7 +55,21 @@ namespace TensorFlowServingClient.Utils
 			return imageMatrix;
 		}
 
-		private static byte[] BitmapToByteArray(Bitmap bitmap)
+		private static (int, int, int)[][] ConvertImageDataToDimArraysColor(int numRows, int numCols, MemoryStream stream)
+		{
+			var imageMatrix = new (int, int, int)[numRows][];
+			for (int row = 0; row < numRows; row++)
+			{
+				imageMatrix[row] = new (int, int, int)[numCols];
+				for (int col = 0; col < numCols; ++col)
+				{
+					imageMatrix[row][col] = (stream.ReadByte(), stream.ReadByte(), stream.ReadByte());
+				}
+			}
+			return imageMatrix;
+		}
+
+		private static byte[] BitmapToByteArrayGrayScale(Bitmap bitmap)
 		{
 			BitmapData bmpdata = null;
 
@@ -82,6 +105,26 @@ namespace TensorFlowServingClient.Utils
 				}
 
 
+				return bytedata;
+			}
+			finally
+			{
+				if (bmpdata != null)
+					bitmap.UnlockBits(bmpdata);
+			}
+		}
+
+		private static byte[] BitmapToByteArrayColor(Bitmap bitmap)
+		{
+			BitmapData bmpdata = null;
+
+			try
+			{
+				bmpdata = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
+				int numbytes = bmpdata.Stride * bitmap.Height;
+				var bytedata = new byte[numbytes];
+				var ptr = bmpdata.Scan0;
+				Marshal.Copy(ptr, bytedata, 0, numbytes);
 				return bytedata;
 			}
 			finally

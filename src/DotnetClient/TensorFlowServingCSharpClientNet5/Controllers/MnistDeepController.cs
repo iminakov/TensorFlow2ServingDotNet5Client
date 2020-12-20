@@ -34,10 +34,10 @@ namespace TensorFlowServingCSharpClientNet5.Controllers
         {
             try
             {
-				var stopWatch = Stopwatch.StartNew();
-				var imageData = CreateImageDataFromModel(model.ImageData);
-				
-				//Init predict request
+                var stopWatch = Stopwatch.StartNew();
+                var imageData = CreateImageDataFromModel(model.ImageData);
+
+                //Init predict request
                 var request = new PredictRequest()
                 {
                     ModelSpec = new ModelSpec() { Name = "mnist_v1", SignatureName = "serving_default" }
@@ -49,7 +49,7 @@ namespace TensorFlowServingCSharpClientNet5.Controllers
                 var client = new PredictionService.PredictionServiceClient(channel);
                 var predictResponse = client.Predict(request);
 
-				//Process response
+                //Process response
                 var maxValue = predictResponse.Outputs["dense_1"].FloatVal.Max();
                 var predictedValue = predictResponse.Outputs["dense_1"].FloatVal.IndexOf(maxValue);
 
@@ -57,7 +57,7 @@ namespace TensorFlowServingCSharpClientNet5.Controllers
                 {
                     Success = true,
                     Results = predictResponse.Outputs["dense_1"].FloatVal.Select(x => x).ToList(),
-                    PredictedNumber = predictedValue,
+                    PredictedValue = predictedValue,
                     DebugText = $"Total time: {stopWatch.ElapsedMilliseconds} ms"
                 };
 
@@ -73,7 +73,7 @@ namespace TensorFlowServingCSharpClientNet5.Controllers
         {
             try
             {
-				var stopWatch = Stopwatch.StartNew();
+                var stopWatch = Stopwatch.StartNew();
                 var imageData = CreateImageDataFromModel(model.ImageData);
 
                 var request = new PredictionRestRequest();
@@ -81,11 +81,11 @@ namespace TensorFlowServingCSharpClientNet5.Controllers
                 request.Instances = TensorBuilder.CreateTensorFromImage(imageData, 255.0f).FloatVal.ToList();
 
                 var result = await _httpClient.PostAsync(_configuration.GetSection("TfServer")["RestServerUrl"],
-                	new StringContent(JsonConvert.SerializeObject(request, Formatting.Indented)));
+                    new StringContent(JsonConvert.SerializeObject(request, Formatting.Indented)));
 
-				//Process response
-				var content = await result.Content.ReadAsStringAsync();
-				var predictionRestResponse = JsonConvert.DeserializeObject<PredictionRestResponse>(content);
+                //Process response
+                var content = await result.Content.ReadAsStringAsync();
+                var predictionRestResponse = JsonConvert.DeserializeObject<PredictionRestResponse>(content);
                 var maxValue = predictionRestResponse.Predictions[0][0].Max();
                 var predictedValue = Array.IndexOf(predictionRestResponse.Predictions[0][0], maxValue);
 
@@ -93,7 +93,7 @@ namespace TensorFlowServingCSharpClientNet5.Controllers
                 {
                     Success = true,
                     Results = predictionRestResponse.Predictions[0][0].Select(x => x).ToList(),
-                    PredictedNumber = predictedValue,
+                    PredictedValue = predictedValue,
                     DebugText = $"Total time: {stopWatch.ElapsedMilliseconds} ms"
                 };
             }
@@ -103,31 +103,31 @@ namespace TensorFlowServingCSharpClientNet5.Controllers
             }
         }
 
-		private int[][] CreateImageDataFromModel(string modelImageData)
-		{
-                //Load Bitmap from input base64
-                Bitmap convertedImage = null;
+        private int[][] CreateImageDataFromModel(string modelImageData)
+        {
+            //Load Bitmap from input base64
+            Bitmap convertedImage = null;
 
-                using (var str = new MemoryStream(Convert.FromBase64String(modelImageData)))
+            using (var str = new MemoryStream(Convert.FromBase64String(modelImageData)))
+            {
+                str.Position = 0;
+                using (var bmp = Image.FromStream(str))
                 {
-                    str.Position = 0;
-                    using (var bmp = Image.FromStream(str))
-                    {
-                        //Resize image and convert to rgb24
-                        convertedImage = ImageUtils.ResizeImage(bmp, 28, 28, 280, 280);
-                    }
+                    //Resize image and convert to rgb24
+                    convertedImage = ImageUtils.ResizeImage(bmp, 28, 28, 280, 280);
                 }
+            }
 
-				//Convert image to 28x28 8bit per pixel image data array
-                var imageData = ImageUtils.ConvertImageStreamToDimArrays(convertedImage);
+            //Convert image to 28x28 8bit per pixel image data array
+            var imageData = ImageUtils.ConvertImageStreamToDimArraysGrayScale(convertedImage);
 
-				return imageData;
-		}
+            return imageData;
+        }
 
-		private PredictionResult ErrorResult(Exception ex) => new PredictionResult()
-                {
-                    Success = false,
-                    ErrorMessage = ex.ToString()
-                }; 
+        private PredictionResult ErrorResult(Exception ex) => new PredictionResult()
+        {
+            Success = false,
+            ErrorMessage = ex.ToString()
+        };
     }
 }
